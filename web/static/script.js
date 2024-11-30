@@ -15,7 +15,7 @@ document.getElementById('searchButton').addEventListener('click', () => {
     place_type: placeTypes
   };
 
-  fetch('http://158.160.27.205:8080/api/places/search/', {
+  fetch('http://127.0.0.1:8080/api/places/search/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
