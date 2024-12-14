@@ -4,6 +4,7 @@ import Address
 import APIYandex
 from collections import deque
 
+
 class PlaneCoordinates:
     def __init__(self, x: float, y: float):
         self.x = x
@@ -103,6 +104,12 @@ class PathFinder:
         self.plane_points = dict[Point, PlaneCoordinates]()
         self.update_distances()
         self.graph = self.build_graph()
+
+    def find_path_by_segments(self, start_point: Point,
+                              adjacency_matrix: list[list[int]],
+                              segments_filling: list[list[Point]]) -> list[
+        Point]:
+        current_segment = 0
 
     def find_path(self) -> list[Point]:
         paths = self.find_all_paths()
