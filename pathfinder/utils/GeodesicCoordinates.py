@@ -1,5 +1,5 @@
 import pymap3d as pm
-from PointObject.PlaneCoordinates import PlaneCoordinates
+from pathfinder.utils.PlaneCoordinates import PlaneCoordinates
 
 
 class GeodesicCoordinates:
@@ -13,6 +13,11 @@ class GeodesicCoordinates:
                                  conversion_point.longitude,
                                  0)
         return PlaneCoordinates(result[0], result[1])
+
+    def get_distance_to(self, other):
+        other_plane = other.convert_to_plane(self)
+        self_plane = self.convert_to_plane(self)
+        return self_plane.get_distance_to(other_plane)
 
     def __repr__(self):
         return f'{self.latitude},{self.longitude}'

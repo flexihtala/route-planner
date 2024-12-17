@@ -57,14 +57,16 @@ document.getElementById('searchButton').addEventListener('click', () => {
         });
 
         if (points.length > 1) {
-          ymaps.route(points, {
-            mapStateAutoApply: true
-          }).then(route => {
-            myMap.geoObjects.add(route);
-          }).catch(error => {
-            console.error('Ошибка при построении маршрута:', error);
-            alert('Не удалось построить маршрут.');
+          const multiRoute = new ymaps.multiRouter.MultiRoute({
+                referencePoints: points,
+                params: {
+                        routingMode: "pedestrian"
+                }
+          }, {
+                boundsAutoApply: true
           });
+
+          myMap.geoObjects.add(multiRoute);
         } else {
           alert('Недостаточно точек для построения маршрута.');
         }
