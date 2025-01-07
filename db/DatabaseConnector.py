@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, and_
+from sqlalchemy import and_, NullPool, select, create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from db.utils.Address import Address
@@ -29,10 +29,9 @@ class DatabaseConnector:
     def __init__(self):
         self.engine = self._create_engine()
         self.Session = scoped_session(sessionmaker(bind=self.engine))
-        self.session = self.Session()
 
     def _create_engine(self):
-        return create_engine(self._url, echo=False)
+        return create_engine(self._url, echo=False, poolclass=NullPool)
 
     def get_answer(self, min_lon: float, max_lon: float,
                    min_lat: float, max_lat: float, tags=None) -> list[Point]:
@@ -49,21 +48,35 @@ class DatabaseConnector:
         if tags is None:
             tags = self.tags
 
-        query_filters = [
-            Address.lon.between(min_lon, max_lon),
-            Address.lat.between(min_lat, max_lat),
-            Address.amenity.in_(tags)
-        ]
+        with self.Session() as session:
+            query_filters = [
+                Address.lon.between(min_lon, max_lon),
+                Address.lat.between(min_lat, max_lat),
+                Address.amenity.in_(tags)
+            ]
 
-        answer = self.session.query(Address).filter(and_(*query_filters)).all()
-        answer = [Point.address_to_point(a) for a in answer]
+            result = session.execute(
+                select(Address).filter(and_(*query_filters))
+            )
+            addresses = result.scalars().all()
+            answer = [Point.address_to_point(a) for a in addresses]
 
-        if 'art_object' in tags:
-            art_objects = self.session.query(ArtObject).filter(
-                and_(ArtObject.lon.between(min_lon, max_lon),
-                ArtObject.lat.between(min_lat, max_lat))
-            ).all()
-            art_objects = [Point.art_object_to_point(a) for a in art_objects]
-            answer.extend(art_objects)
+            if 'art_object' in tags:
+                result = session.execute(
+                    select(ArtObject).filter(
+                        and_(
+                            ArtObject.lon.between(min_lon, max_lon),
+                            ArtObject.lat.between(min_lat, max_lat)
+                        )
+                    )
+                )
+                art_objects = result.scalars().all()
+                art_points = [Point.art_object_to_point(a) for a in
+                              art_objects]
+                answer.extend(art_points)
 
         return answer
+
+    def close(self):
+        self.Session.remove()
+        self.engine.dispose()  # Освобождение всех соединений движка

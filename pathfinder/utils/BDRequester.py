@@ -17,8 +17,8 @@ class BDRequester:
         return GeodesicCoordinates(response[1], response[0])
 
     @staticmethod
-    def get_points(start_point: GeodesicCoordinates, length: float, tags) \
-            -> set[Point]:
+    def get_points(start_point: GeodesicCoordinates, length: float,
+                   tags) -> set[Point]:
         length = math.sqrt(2) * length
         bottom_left, top_right = BDRequester.get_rectangle_approximation_of_area(
             start_point, length)
@@ -26,6 +26,7 @@ class BDRequester:
         response = db.get_answer(bottom_left.longitude, top_right.longitude,
                                  bottom_left.latitude, top_right.latitude,
                                  tags)
+        db.close()
         return set(response)
 
     @staticmethod
