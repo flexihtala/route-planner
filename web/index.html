@@ -33,26 +33,25 @@
     </form>
     <input type="text" id="address" name="address" placeholder="Введите ваш адрес">
 
-    <label for="radius">Радиус (км):</label>
-    <input type="number" id="radius" name="radius" min="1" placeholder="Введите радиус">
+    <label for="radius">Количество часов в прогулке:</label>
+    <input type="number" id="radius" name="radius" min="1" placeholder="Введите количество часов">
 
-    <label for="placeTypes">Выберите типы мест:</label>
-    <select id="placeTypes" name="placeTypes" multiple>
-      <option value="theatre">Театр</option>
-      <option value="restaurant">Ресторан</option>
-      <option value="bar">Бар</option>
-      <option value="arts_centre">Арт-Центр</option>
-      <option value="social_facility">Социальный объект</option>
-      <option value="cafe">Кафе</option>
-      <option value="hookah-lounge">Кальян</option>
-      <option value="pub">Паб</option>
-      <option value="fast_food">Фастфуд</option>
-      <option value="place_of_worship">Церковь</option>
-      <option value="library">Библиотека</option>
-      <option value="university">Университет</option>
-      <option value="art_object">Арт-Объект</option>
-    </select>
-
+<label for="placeTypes">Выберите типы мест:</label>
+    <div id="placeTypes">
+      <label><input type="checkbox" name="placeType" value="theatre"> Театр</label><br>
+      <label><input type="checkbox" name="placeType" value="restaurant"> Ресторан</label><br>
+      <label><input type="checkbox" name="placeType" value="bar"> Бар</label><br>
+      <label><input type="checkbox" name="placeType" value="arts_centre"> Арт-Центр</label><br>
+      <label><input type="checkbox" name="placeType" value="social_facility"> Социальный объект</label><br>
+      <label><input type="checkbox" name="placeType" value="cafe"> Кафе</label><br>
+      <label><input type="checkbox" name="placeType" value="hookah-lounge"> Кальян</label><br>
+      <label><input type="checkbox" name="placeType" value="pub"> Паб</label><br>
+      <label><input type="checkbox" name="placeType" value="fast_food"> Фастфуд</label><br>
+      <label><input type="checkbox" name="placeType" value="place_of_worship"> Церковь</label><br>
+      <label><input type="checkbox" name="placeType" value="library"> Библиотека</label><br>
+      <label><input type="checkbox" name="placeType" value="university"> Университет</label><br>
+      <label><input type="checkbox" name="placeType" value="art_object"> Арт-Объект</label><br>
+    </div>
     <button id="searchButton">Найти</button>
 
     <!-- Элемент для отображения результатов -->

@@ -1,8 +1,8 @@
 document.getElementById('searchButton').addEventListener('click', () => {
   const address = document.getElementById('address').value;
   const radius = document.getElementById('radius').value;
-  const placeTypes = Array.from(document.getElementById('placeTypes').selectedOptions)
-                          .map(option => option.value);
+  const placeTypes = Array.from(document.querySelectorAll('input[name="placeType"]:checked')).map(checkbox => checkbox.value);
+
 
   if (!address || !radius || placeTypes.length === 0) {
     alert('Пожалуйста, заполните все поля!');
@@ -15,7 +15,7 @@ document.getElementById('searchButton').addEventListener('click', () => {
     place_type: placeTypes
   };
 
-  fetch('http://127.0.0.1:8080/api/places/search/', {
+  fetch('http://84.201.162.82:8080/api/places/search/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -57,16 +57,16 @@ document.getElementById('searchButton').addEventListener('click', () => {
         });
 
         if (points.length > 1) {
-          const multiRoute = new ymaps.multiRouter.MultiRoute({
-                referencePoints: points,
-                params: {
-                        routingMode: "pedestrian"
-                }
-          }, {
-                boundsAutoApply: true
-          });
+	  const multiRoute = new ymaps.multiRouter.MultiRoute({
+		referencePoints: points,
+		params: {
+			routingMode: "pedestrian"
+		}
+	  }, {
+		boundsAutoApply: true
+	  });
 
-          myMap.geoObjects.add(multiRoute);
+	  myMap.geoObjects.add(multiRoute);
         } else {
           alert('Недостаточно точек для построения маршрута.');
         }
