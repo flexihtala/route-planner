@@ -13,14 +13,12 @@ body {
 }
 
 .container {
-    text-align: center;
     position: relative;
     max-width: 700px;
     width: 55%;
     padding: 25px;
     border-radius: 8px;
 }
-
 
 .container header {
     position: relative;
@@ -40,7 +38,6 @@ body {
     display: block;
     color: rgba(243, 237, 247, 1);
     margin: 15px;
-
 }
 
 input, select, button {
@@ -52,10 +49,81 @@ input, select, button {
     color: #362e43;
 }
 
-
-
 #map {
     width: 100%;
     height: 500px;
     margin-top: 20px;
+}
+
+/* Стилизация чекбоксов */
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* Стилизация для двух колонок */
+#placeTypes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+#placeTypes .checkbox-container {
+    margin-bottom: 0; /* Убираем нижний отступ для чекбоксов */
 }

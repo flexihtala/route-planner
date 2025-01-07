@@ -36,22 +36,58 @@
     <label for="radius">Количество часов в прогулке:</label>
     <input type="number" id="radius" name="radius" min="1" placeholder="Введите количество часов">
 
-<label for="placeTypes">Выберите типы мест:</label>
+    <label for="placeTypes">Выберите типы мест:</label>
     <div id="placeTypes">
-      <label><input type="checkbox" name="placeType" value="theatre"> Театр</label><br>
-      <label><input type="checkbox" name="placeType" value="restaurant"> Ресторан</label><br>
-      <label><input type="checkbox" name="placeType" value="bar"> Бар</label><br>
-      <label><input type="checkbox" name="placeType" value="arts_centre"> Арт-Центр</label><br>
-      <label><input type="checkbox" name="placeType" value="social_facility"> Социальный объект</label><br>
-      <label><input type="checkbox" name="placeType" value="cafe"> Кафе</label><br>
-      <label><input type="checkbox" name="placeType" value="hookah-lounge"> Кальян</label><br>
-      <label><input type="checkbox" name="placeType" value="pub"> Паб</label><br>
-      <label><input type="checkbox" name="placeType" value="fast_food"> Фастфуд</label><br>
-      <label><input type="checkbox" name="placeType" value="place_of_worship"> Церковь</label><br>
-      <label><input type="checkbox" name="placeType" value="library"> Библиотека</label><br>
-      <label><input type="checkbox" name="placeType" value="university"> Университет</label><br>
-      <label><input type="checkbox" name="placeType" value="art_object"> Арт-Объект</label><br>
+      <label class="checkbox-container">Театр
+        <input type="checkbox" name="placeType" value="theatre">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Ресторан
+        <input type="checkbox" name="placeType" value="restaurant">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Бар
+        <input type="checkbox" name="placeType" value="bar">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Арт-Центр
+        <input type="checkbox" name="placeType" value="arts_centre">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Кафе
+        <input type="checkbox" name="placeType" value="cafe">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Кальян
+        <input type="checkbox" name="placeType" value="hookah-lounge">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Паб
+        <input type="checkbox" name="placeType" value="pub">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Фастфуд
+        <input type="checkbox" name="placeType" value="fast_food">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Церковь
+        <input type="checkbox" name="placeType" value="place_of_worship">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Библиотека
+        <input type="checkbox" name="placeType" value="library">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Университет
+        <input type="checkbox" name="placeType" value="university">
+        <span class="checkmark"></span>
+      </label>
+      <label class="checkbox-container">Арт-Объект
+        <input type="checkbox" name="placeType" value="art_object">
+        <span class="checkmark"></span>
+      </label>
     </div>
+
     <button id="searchButton">Найти</button>
 
     <!-- Элемент для отображения результатов -->
@@ -61,6 +97,6 @@
     <div id="map"></div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="static/script.js"></script>
 </body>
 </html>
