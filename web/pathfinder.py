@@ -89,6 +89,7 @@ class BDRequests:
 
 class PathFinder:
     meters_per_hour = 3000
+    max_points = 10
 
     def __init__(self, address: str, desired_time: float,
                  tags) -> None:
@@ -123,7 +124,8 @@ class PathFinder:
             plane_closest_point = self.plane_points[closest_point]
             length -= self.plane_points[current_point].get_distance_to(
                 plane_closest_point)
-            if plane_closest_point.get_distance_to(plane_start_point) > length:
+            if plane_closest_point.get_distance_to(plane_start_point) > length\
+                    or len(path) >= self.max_points:
                 break
             path.append(closest_point)
             current_point = closest_point
