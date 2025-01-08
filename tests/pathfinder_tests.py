@@ -1,7 +1,7 @@
 import random
 import unittest
-from web.pathfinder import BDRequests
-from web.pathfinder import PathFinder
+from pathfinder.utils.BDRequester import BDRequester
+from pathfinder.PathFinder import PathFinder
 from pathfinder.utils.GeodesicCoordinates import GeodesicCoordinates
 from pathfinder.utils.Point import Point
 
@@ -18,7 +18,7 @@ class ApproximationTests(unittest.TestCase):
 
     def approximation_test(self, start_point: GeodesicCoordinates,
                            length: float):
-        bdr = BDRequests()
+        bdr = BDRequester()
         bottom_left, top_right = bdr.get_rectangle_approximation_of_area(
             start_point, length)
         distance_to_bottom = (GeodesicCoordinates(
@@ -44,7 +44,7 @@ class ApproximationTests(unittest.TestCase):
 
 
 class PathFinderTests(unittest.TestCase):
-    adequacy_ratio = 0.75
+    adequacy_ratio = PathFinder.adequacy_ratio
 
     def test_path_finder_returns_something(self):
         points = PathFinderTests.generate_points()
@@ -64,7 +64,7 @@ class PathFinderTests(unittest.TestCase):
         pathfinder = PathFinder(None, 1, None, points,
                                 GeodesicCoordinates(60, 60))
         path = pathfinder.find_path()
-        self.assertEquals(path[0], path[-1])
+        self.assertEqual(path[0], path[-1])
 
     def test_path_is_cyclic_on_random(self):
         points = PathFinderTests.generate_random_points(
@@ -72,7 +72,7 @@ class PathFinderTests(unittest.TestCase):
         pathfinder = PathFinder(None, 1, None, points,
                                 GeodesicCoordinates(60, 60))
         path = pathfinder.find_path()
-        self.assertEquals(path[0], path[-1])
+        self.assertEqual(path[0], path[-1])
 
     def test_path_length_is_adequate(self):
         desired_time = 0.5
@@ -80,10 +80,7 @@ class PathFinderTests(unittest.TestCase):
         pathfinder = PathFinder(None, desired_time, None, points,
                                 GeodesicCoordinates(60, 60))
         path = pathfinder.find_path()
-        length = 0
-        for i in range(len(path) - 1):
-            length += path[i].coordinates.get_distance_to(
-                path[i + 1].coordinates)
+        length = PathFinder.get_path_length(path)
         least_length = (desired_time * pathfinder.meters_per_hour
                         * self.adequacy_ratio)
         self.assertGreater(length, least_length)
@@ -118,8 +115,8 @@ class PathFinderTests(unittest.TestCase):
         result = set()
         length = random.randint(15, 20)
         for i in range(length):
-            lat_delta = random.randint(-200, 200) / 100000
-            long_delta = random.randint(-200, 200) / 100000
+            lat_delta = random.randint(-300, 300) / 100000
+            long_delta = random.randint(-300, 300) / 100000
             point = Point(GeodesicCoordinates(start_point.latitude + lat_delta,
                                               start_point.longitude + long_delta))
             result.add(point)
