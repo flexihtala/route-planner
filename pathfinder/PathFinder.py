@@ -42,34 +42,46 @@ class PathFinder:
 
     def the_dumbest_greedy_algorithm(self) -> list[Point]:
         index_of_greed = 0
-        path = self.greedy_with_indexes(self.points, self.start_point,
-                                        self.desired_length, index_of_greed)
+        path = self.greedy_with_shifts(self.points, self.start_point,
+                                       self.desired_length, index_of_greed)
         default_length = len(path)
         path_length = self.get_path_length(path)
         while path_length < self.desired_length * self.adequacy_ratio and len(
                 self.points) - default_length > index_of_greed:
+            path_length = self.get_path_length(path)
             index_of_greed += 1
-            path = self.greedy_with_indexes(self.points, self.start_point,
+            try:
+                a = self.greedy_with_shifts(self.points, self.start_point,
                                             self.desired_length,
-                                            index_of_greed)
+                                            index_of_greed, 3)
+                path = a
+            except Exception:
+                break
         return path
 
-    def greedy_with_indexes(self, unused: set[Point], start_point: Point,
-                            desired_length: float,
-                            index_of_greed: int) -> list[Point]:
+    def greedy_with_shifts(self, unused: set[Point], start_point: Point,
+                           desired_length: float,
+                           shift_amplitude: int = 0,
+                           shift_frequency: int = 0) -> list[Point]:
         path = []
-        unused = set(unused)
+        local_unused = set(unused)
         current_point = start_point
         remaining_length = desired_length
         plane_start_point = self.plane_points[start_point]
         path.append(current_point)
-        unused.remove(current_point)
+        local_unused.remove(current_point)
+        shift_counter = 0
         while True:
+            shift_counter += 1
+            shift = 0
+            if shift_frequency == shift_counter:
+                shift += shift_amplitude
+                shift_counter = 0
             plane_current_point = self.plane_points[current_point]
-            if not unused:
+            if not local_unused:
                 break
-            next_point = sorted(unused, key=lambda p: self.plane_points[
-                p].get_distance_to(plane_current_point))[index_of_greed]
+            next_point = sorted(local_unused, key=lambda p: self.plane_points[
+                p].get_distance_to(plane_current_point))[shift]
             plane_next_point = self.plane_points[next_point]
             remaining_length -= plane_current_point.get_distance_to(
                 plane_next_point)
@@ -79,6 +91,6 @@ class PathFinder:
                 break
             path.append(next_point)
             current_point = next_point
-            unused.remove(next_point)
+            local_unused.remove(next_point)
         path.append(self.start_point)
         return path

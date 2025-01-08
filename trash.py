@@ -1,4 +1,6 @@
-a = [2, 1, 3]
-b = sorted(a, key=lambda x: x)
-print(b)
-print(b[-2])
+from pathfinder.PathFinder import PathFinder
+
+if __name__ == '__main__':
+    pathfinder = PathFinder("проспект ленина 51", 1, ["art_object"])
+    path = pathfinder.find_path()
+    print(1)
