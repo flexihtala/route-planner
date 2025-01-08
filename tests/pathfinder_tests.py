@@ -115,8 +115,8 @@ class PathFinderTests(unittest.TestCase):
         result = set()
         length = random.randint(15, 20)
         for i in range(length):
-            lat_delta = random.randint(-200, 200) / 100000
-            long_delta = random.randint(-200, 200) / 100000
+            lat_delta = random.randint(-300, 300) / 100000
+            long_delta = random.randint(-300, 300) / 100000
             point = Point(GeodesicCoordinates(start_point.latitude + lat_delta,
                                               start_point.longitude + long_delta))
             result.add(point)
