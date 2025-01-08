@@ -44,7 +44,7 @@ class ApproximationTests(unittest.TestCase):
 
 
 class PathFinderTests(unittest.TestCase):
-    adequacy_ratio = 0.75
+    adequacy_ratio = PathFinder.adequacy_ratio
 
     def test_path_finder_returns_something(self):
         points = PathFinderTests.generate_points()
@@ -80,6 +80,18 @@ class PathFinderTests(unittest.TestCase):
         pathfinder = PathFinder(None, desired_time, None, points,
                                 GeodesicCoordinates(60, 60))
         path = pathfinder.find_path()
+        length = PathFinder.get_path_length(path)
+        least_length = (desired_time * pathfinder.meters_per_hour
+                        * self.adequacy_ratio)
+        self.assertGreater(length, least_length)
+
+    def test_path_length_is_adequate_on_random(self):
+        desired_time = 0.5
+        points = PathFinderTests.generate_random_points(
+            GeodesicCoordinates(60, 60))
+        pathfinder = PathFinder(None, desired_time, None, points,
+                                GeodesicCoordinates(60, 60))
+        path = pathfinder.find_path()
         length = 0
         for i in range(len(path) - 1):
             length += path[i].coordinates.get_distance_to(
@@ -87,21 +99,6 @@ class PathFinderTests(unittest.TestCase):
         least_length = (desired_time * pathfinder.meters_per_hour
                         * self.adequacy_ratio)
         self.assertGreater(length, least_length)
-
-    # def test_path_length_is_adequate_on_random(self):
-    #     desired_time = 0.5
-    #     points = PathFinderTests.generate_random_points(
-    #         GeodesicCoordinates(60, 60))
-    #     pathfinder = PathFinder(None, desired_time, None, points,
-    #                             GeodesicCoordinates(60, 60))
-    #     path = pathfinder.find_path()
-    #     length = 0
-    #     for i in range(len(path) - 1):
-    #         length += path[i].coordinates.get_distance_to(
-    #             path[i + 1].coordinates)
-    #     least_length = (desired_time * pathfinder.meters_per_hour
-    #                     * self.adequacy_ratio)
-    #     self.assertGreater(length, least_length)
 
     @staticmethod
     def generate_points() -> set[Point]:
