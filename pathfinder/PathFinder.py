@@ -4,11 +4,11 @@ from pathfinder.utils.PlaneCoordinates import PlaneCoordinates
 from pathfinder.utils.BDRequester import BDRequester
 
 
-
 class PathFinder:
     meters_per_hour = 3000
+    max_points = 10
 
-    def __init__(self, address: str, desired_time: float,
+    def __init__(self, address: str | None, desired_time: float,
                  tags, points: set[Point] = None,
                  start_loc: GeodesicCoordinates = None) -> None:
         if start_loc is None:
@@ -17,8 +17,9 @@ class PathFinder:
         self.current_point = self.start_point
         self.desired_length = desired_time * PathFinder.meters_per_hour
         if points is None:
-            self.points = BDRequester.get_points(start_loc, self.desired_length,
-                                                tags)
+            self.points = BDRequester.get_points(start_loc,
+                                                 self.desired_length,
+                                                 tags)
         else:
             self.points = points
         self.points.add(self.start_point)
@@ -45,8 +46,9 @@ class PathFinder:
             plane_closest_point = self.plane_points[closest_point]
             remaining_length -= plane_current_point.get_distance_to(
                 plane_closest_point)
-            if plane_closest_point.get_distance_to(
-                    plane_start_point) > remaining_length:
+            if (plane_closest_point.get_distance_to(
+                    plane_start_point) > remaining_length
+                    or len(path) >= self.max_points):
                 break
             path.append(closest_point)
             current_point = closest_point
