@@ -41,13 +41,17 @@ class PathFinder:
         return self.the_dumbest_greedy_algorithm()
 
     def the_dumbest_greedy_algorithm(self) -> list[Point]:
+        index_of_greed = 0
         path = self.greedy_with_indexes(self.points, self.start_point,
-                                        self.desired_length, 0)
+                                        self.desired_length, index_of_greed)
+        default_length = len(path)
         path_length = self.get_path_length(path)
-        if path_length < self.desired_length * self.adequacy_ratio and len(
-                self.points) > self.max_points:
+        while path_length < self.desired_length * self.adequacy_ratio and len(
+                self.points) - default_length > index_of_greed:
+            index_of_greed += 1
             path = self.greedy_with_indexes(self.points, self.start_point,
-                                            self.desired_length, 1)
+                                            self.desired_length,
+                                            index_of_greed)
         return path
 
     def greedy_with_indexes(self, unused: set[Point], start_point: Point,
